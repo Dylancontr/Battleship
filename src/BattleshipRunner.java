@@ -56,7 +56,9 @@ public class BattleshipRunner extends Application{
                                     currPlayer.setText("player2");
                                         
                                 }else if(outcome.equals("Area already shot")){
+                                    
                                     hitIndicator.setText("You already shot at that area, go again");
+                                    
                                 }else{
                                     
                                     cell.setFill(Color.BLACK);

@@ -7,6 +7,9 @@ public class Ship {
     
     public Ship(int l, int i){
         size = new ShipPart[l];
+        for(int j = 0; j < l; j++){
+            size[j] = new ShipPart(i);
+        }
         length = l;
         sunk = false;
         id = i;
@@ -21,7 +24,7 @@ public class Ship {
                     size[i].setCol(c);
                 }
                 break;
-            case 'e':
+            case 'w':
                 for(int i = 0; i < size.length; i++){
                     size[i].setShipID(id);
                     size[i].setRow(r);
@@ -35,7 +38,7 @@ public class Ship {
                     size[i].setCol(c);
                 }
                 break;
-            case 'w':
+            case 'e':
                 for(int i = 0; i < size.length; i++){
                     size[i].setShipID(id);
                     size[i].setRow(r);

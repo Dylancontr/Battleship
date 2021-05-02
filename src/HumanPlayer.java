@@ -15,9 +15,27 @@ public class HumanPlayer extends Player{
         
         int hitItem = other.shoot(r,c);
 
-        if(hitItem == 0) return "Miss";
-        if(hitItem == 1) return "Hit";
-        return "You sunk ship number " + hitItem;
+        switch(hitItem){
+            case -1:
+                return "Miss";
+            case 0:
+                return "Hit";
+            case -2:
+                return "Area already shot";
+            case 1:
+                return " sunk Destroyer";
+            case 2:
+                return " sunk Submarine";
+            case 3:
+                return " sunk Cruiser";
+            case 4:
+                return " sunk Battleship";
+            case 5:
+                return " sunk Carrier";
+            default:
+                return " sunk ship number " + hitItem;
+        }
+
     }
 
 }
