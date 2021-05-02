@@ -1,10 +1,11 @@
 public class Ship {
     
-    private boolean sunk;
-    private ShipPart[] size;
-    private int id;
-    int length;
+    private boolean sunk;//status of ship
+    private ShipPart[] size;//size of ship
+    private int id;//id of ship
+    int length;//length of size
     
+    //takes in two ints, they are the size of the ship and the id of the ship
     public Ship(int l, int i){
         size = new ShipPart[l];
         for(int j = 0; j < l; j++){
@@ -15,52 +16,25 @@ public class Ship {
         id = i;
     }
 
-    public void setShip(int r, int c, char d){
-        switch(d){
-            case 'n':
-                for(int i = 0; i < size.length; i++){
-                    size[i].setShipID(id);
-                    size[i].setRow(r-i);
-                    size[i].setCol(c);
-                }
-                break;
-            case 'w':
-                for(int i = 0; i < size.length; i++){
-                    size[i].setShipID(id);
-                    size[i].setRow(r);
-                    size[i].setCol(c+i);
-                }
-                break;
-            case 's':
-                for(int i = 0; i < size.length; i++){
-                    size[i].setShipID(id);
-                    size[i].setRow(r+i);
-                    size[i].setCol(c);
-                }
-                break;
-            case 'e':
-                for(int i = 0; i < size.length; i++){
-                    size[i].setShipID(id);
-                    size[i].setRow(r);
-                    size[i].setCol(c-i);
-                }
-                break;
-        }
+    //Gives each shipPart their id
+    public void setShip(){
         for(int i = 0; i < size.length; i++){
             size[i].setShipID(id);
-            size[i].setRow(r);
-            size[i].setCol(c);
         }
     }
 
+    //checks if ship is sunk by seeing if each ShipPart has been hit
     public boolean isSunk(){
+        //checking each ShipPart
         for(int i = 0; i < size.length; i++){
             if(!size[i].getHit()) return false;
         }
+        //tells Ship it has been sunk
         sunk = true;
         return true;
     }
 
+    //Getters/Accessors
     public ShipPart getShipPart(int i){
         return size[i];
     }

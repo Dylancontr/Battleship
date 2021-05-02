@@ -1,31 +1,7 @@
 public class ShotMarker implements IEntity{
-
-    private int row;
-    private int col;
-
+    
+    //creates a shotMarker. It's purpose is to exist in a spot and do nothing (If only our existance was that simple).
     public ShotMarker(){
-        
-    }
-
-    @Override
-    public int getRow() {
-        return row;
-    }
-
-    @Override
-    public int getCol() {
-        return col;
-    }
-
-    @Override
-    public void setRow(int r) {
-        row = r;
-        
-    }
-
-    @Override
-    public void setCol(int c) {
-        col = c;
         
     }
     

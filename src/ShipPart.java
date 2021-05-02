@@ -1,49 +1,30 @@
 public class ShipPart implements IEntity{
     
-    private boolean hit;
-    private int shipID;
-    private int row;
-    private int col;
+    private boolean hit;//tells if part has been struck
+    private int shipID;//tells what ship it is a part of
 
+    //takes in and int that holds the id of the ship
     public ShipPart(int id){
         hit = false;
         shipID = id;
     }
 
+    //returns if it has been hit
     public boolean getHit(){
         return hit;
     }
     
+    //Tells part it has been struck
+    //returns id to tell calling function which ship has been struck
     public int beHit(){
         hit = true;
         return shipID;
     }
-
-    public int getShipID(){
-        return shipID;
-    }
-
+    
+    //set Ship id, takes int
     public void setShipID(int id){
         shipID = id;
     }
 
-    @Override
-    public int getRow(){
-        return row;
-    }
 
-    @Override 
-    public int getCol(){
-        return col;
-    }
-
-    @Override
-    public void setRow(int r){
-        row = r;
-    }
-
-    @Override
-    public void setCol(int c){
-        col = c;
-    }
 }
