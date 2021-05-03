@@ -80,6 +80,11 @@ public abstract class Player {
         return board[r][c] == null;
     }
 
+    //checks if spot has already been shot
+    public boolean shot(int r, int c){
+        return board[r][c] instanceof ShotMarker;
+    }
+
     //returns -1 = miss, id = returns sunk ship id, 0 = hit, -2 if spot was already fired upon
     protected int shoot(int r, int c){
         //if areas is free places a shot marker on spot then returns miss
@@ -88,7 +93,7 @@ public abstract class Player {
             return -1;
         }
         //if shot marker is present then it will return that the spot was already fired upon
-        if(board[r][c] instanceof ShotMarker){
+        if(shot(r,c)){
             return -2;
         }
         //if there is a ShipPart present it will tell the ShipPart it was hit, and place a shotMarker,

@@ -26,7 +26,7 @@ public class BattleshipRunner extends Application{
         //gridPane that holds gridPanes
         GridPane container = new GridPane();
         
-        //sets up player grid2
+        //sets up player grids
         GridPane grid = new GridPane();
         GridPane oppGrid = new GridPane();
 
@@ -83,7 +83,7 @@ public class BattleshipRunner extends Application{
         //Sets up boards of squares and sets their behaviors when clicked on
         //defaults for base squares is blue fill and white stroke
 
-        //computer Board
+        //Computer Board
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
                 Square cell = new Square(0,0,75,i,j);
@@ -139,20 +139,40 @@ public class BattleshipRunner extends Application{
                                     currPlayer.setText("player2");
                                 }
                             }
-                            //automatically takes player2's turn if they are a computer operates much the same as HumanPlayer
-                            //Except that there is no check for a spot already hit since take turn does that already
+                            
+                            //automatically takes player2's turn if they are a computer
                             if(currPlayer.getText().equals("player2") && player2 instanceof ComputerPlayer){
-                                String outcome;
-                                int r;
-                                int c;
-                                //randomly picks board square until it hits a new spot
-                                do{
-            
-                                    r = (int)(Math.random()*10);
-                                    c = (int)(Math.random()*10);
-                                    outcome = player2.takeTurn(player1, r,c);
+                                String outcome = "";
+                                int r = 0;
+                                int c = 0;
 
-                                }while(outcome.equals("Area already shot"));
+                                //ComputerPlayer class has an array of predecided on targets this checks if there is one
+                                if(player2.getTarget() != null){
+                                    do{
+                                        
+                                        r = player2.getTarget().getRow();
+                                        c = player2.getTarget().getCol();
+                                        outcome = player2.takeTurn(player1,r,c);
+                                        
+                                    }while(outcome.equals("Area already shot") && player2.getTarget() != null);
+                                    //while loop to make sure it won't fire on something it already has shot and in that case if there is a target still present
+                                }
+                                
+                                //randomly picks board square until it hits a new spot in the case outcome is not set or do while loop in previous if
+                                //resulted in "Area already shot"
+                                if(outcome.equals("Area already shot") || outcome.equals("")){
+
+                                    do{
+            
+                                        r = (int)(Math.random()*10);
+                                        c = (int)(Math.random()*10);
+                                        outcome = player2.takeTurn(player1, r,c);
+
+                                    }while(outcome.equals("Area already shot"));
+
+                                }
+
+
 
                                 //if Hit is returned it sets the cell as Black
                                 if(outcome.equals("Hit")){
@@ -270,10 +290,13 @@ public class BattleshipRunner extends Application{
                         //checks if all ships are set for a player1 then sets ship for player2 (assuming they are a computer)
                         //otherwise it will display the next ship size to be placed
                         if(player1.allShipsSet()){
+                            shipSetup.setText("");
                             messages.setText("");
                             container.add(confirm,1,9);
                             container.add(deny,1,10);
                             oppsunkIndicator.setText("Confirm Placement?");
+                        }else{
+                            shipSetup.setText("Current ship to set " + player1.currShipSize());
                         }
                     }
                 });

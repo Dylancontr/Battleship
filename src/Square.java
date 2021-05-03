@@ -34,15 +34,15 @@ public class Square extends Rectangle implements Comparable<Square>{
 
             if(row == other.getRow()) return 0;
 
-            if(row - other.getRow() > 0) return 3;
-            else if(row - other.getRow() < 0) return 4;
+            if(row > other.getRow()) return 3;
+            else if(row < other.getRow()) return 4;
 
             else return -1;
             
         }else if(row == other.getRow()){
 
-            if(col - other.getCol() > 0) return 1;
-            else if(col - other.getCol() < 0) return 2;
+            if(col > other.getCol()) return 1;
+            else if(col < other.getCol()) return 2;
 
             else return -1;
             
