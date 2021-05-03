@@ -11,8 +11,8 @@ public class ComputerPlayer extends Player{
         //keeps going until all ships set
         while(!allShipsSet()){
             //randomly determines row and column
-            r = (int)(Math.random() * 9);
-            c = (int)(Math.random() * 9);
+            r = (int)(Math.random() * BOARD_SIZE_ROW);
+            c = (int)(Math.random() * BOARD_SIZE_COL);
 
             //randomly picks a number between 1 and 4 then assigns a direction based on that number
             int direction = (int)(Math.random() * 4 + 1);
@@ -37,19 +37,13 @@ public class ComputerPlayer extends Player{
         return true;
     }
 
-    //takes shots during its turn, parameters needed by parent, don't play a role
+    //takes shot during its turn returns result of shot as a string
+    //takes other player and two ints
+    //player to know who to shoot at and two ints to know where to shoot
     @Override
     public String takeTurn(Player other, int r, int c) {
-        int hitItem;
+        int hitItem = other.shoot(r,c);
 
-        //while loop continues until finds a spot to hit that hasn't already been shot
-        do{
-            
-            r = (int)(Math.random()*9);
-            c = (int)(Math.random()*9);
-            hitItem = other.shoot(r,c);
-
-        }while(hitItem == -2);
 
         //chooses reaction based on hitItem that was determined by hit function
         //cases 1-5 are the name of ship IDs they have lenghts: 2,3,3,4,5
@@ -60,6 +54,8 @@ public class ComputerPlayer extends Player{
                 return "Miss";
             case 0:
                 return "Hit";
+            case -2:
+                return "Area already shot";
             case 1:
                 return " sunk Destroyer";
             case 2:

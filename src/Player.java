@@ -4,8 +4,8 @@ public abstract class Player {
     private Ship[] ships;//array of ships
     private int i;//index of current ship looked at by other classes
     private final int NUM_SHIPS = 5;//number of ships players have
-    private final int BOARD_SIZE_ROW = 10;//size of board rows
-    private final int BOARD_SIZE_COL = 10;//size of board columns
+    protected final int BOARD_SIZE_ROW = 10;//size of board rows
+    protected final int BOARD_SIZE_COL = 10;//size of board columns
     
     //creates player based on constants and variables
     public Player(){
@@ -132,6 +132,16 @@ public abstract class Player {
             if(!ships[i].isSunk()) return true;
         }
         return false;
+    }
+
+    public void clearBoard(){
+        for(int j = 0; j < BOARD_SIZE_ROW; j++)
+            for(int k = 0; k < BOARD_SIZE_COL; k++)
+                board[j][k] = null;
+    }
+
+    public void setCurrIndex(int j){
+        i = j;
     }
 
     //abstract classes, see children classes for explanations

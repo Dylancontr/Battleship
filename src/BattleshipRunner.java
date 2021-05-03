@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
-
+import javafx.scene.control.Button;
 
 public class BattleshipRunner extends Application{
     
@@ -23,8 +23,12 @@ public class BattleshipRunner extends Application{
         String COMPSETUP = "Computer setting up";
         String PLAYING = "Choose a space to shoot at";
         
-        //sets up grid
+        //gridPane that holds gridPanes
+        GridPane container = new GridPane();
+        
+        //sets up player grid2
         GridPane grid = new GridPane();
+        GridPane oppGrid = new GridPane();
 
         Label messages = new Label(SETUP);//determines game state
         Label errorMessages = new Label("");//any errors are displayed in here
@@ -32,20 +36,64 @@ public class BattleshipRunner extends Application{
         //players
         HumanPlayer player1 = new HumanPlayer();
         ComputerPlayer player2 = new ComputerPlayer();
-
+        
         Label shipSetup = new Label();//which ship is being set
         
         Label currPlayer = new Label("player1");//determines who's turn it is
-
+        
         //hit/miss indicators for both players
         Label hitIndicator = new Label();
         Label sunkIndicator = new Label();
         Label opphitIndicator = new Label();
         Label oppsunkIndicator = new Label();
+        
+        //Buttons to finalize board placements
+        Button confirm = new Button("yes");
+        Button deny = new Button("no");
 
-        //Sets up board of squares and sets their behaviors when clicked on
+        //Button behaviors
+        confirm.setOnMouseClicked(event->{
+            messages.setText(COMPSETUP);
+            shipSetup.setText("");
+            player2.placeShips(0, 0, 'a'); //dummy arguments do nothing
+            messages.setText(PLAYING);
+            oppsunkIndicator.setText("");
+            for(int k = 0; k < BOARD_SIZE*BOARD_SIZE; k++){
+                Square editing = (Square)grid.getChildren().get(k);
+                editing.setFill(Color.BLUE);
+            }
+            container.getChildren().removeAll(confirm,deny);
+        });
+
+        deny.setOnMouseClicked(event->{
+            if(currPlayer.getText().equals("player1")){
+                player1.clearBoard();
+                player1.setCurrIndex(0);
+                messages.setText(SETUP);
+                for(int k = 0; k < BOARD_SIZE*BOARD_SIZE; k++){
+                    Square editing = (Square)grid.getChildren().get(k);
+                    editing.setFill(Color.BLUE);
+                }
+                oppsunkIndicator.setText("");
+                container.getChildren().removeAll(confirm,deny);
+            }
+        });
+        
+        
+        //Sets up boards of squares and sets their behaviors when clicked on
         //defaults for base squares is blue fill and white stroke
 
+        //computer Board
+        for(int i = 0; i < BOARD_SIZE; i++){
+            for(int j = 0; j < BOARD_SIZE; j++){
+                Square cell = new Square(0,0,75,i,j);
+                cell.setFill(Color.BLUE);
+                cell.setStroke(Color.WHITE);
+                oppGrid.add(cell,i,j);
+            }
+        }
+
+        //Player Board
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
                 Square cell = new Square(0,0,75,i,j);
@@ -94,27 +142,46 @@ public class BattleshipRunner extends Application{
                             //automatically takes player2's turn if they are a computer operates much the same as HumanPlayer
                             //Except that there is no check for a spot already hit since take turn does that already
                             if(currPlayer.getText().equals("player2") && player2 instanceof ComputerPlayer){
+                                String outcome;
+                                int r;
+                                int c;
+                                //randomly picks board square until it hits a new spot
+                                do{
+            
+                                    r = (int)(Math.random()*10);
+                                    c = (int)(Math.random()*10);
+                                    outcome = player2.takeTurn(player1, r,c);
 
-                                String outcome = player2.takeTurn(player1, 0, 0);//0's are dummy arguements needed to call method
+                                }while(outcome.equals("Area already shot"));
+
+                                //if Hit is returned it sets the cell as Black
                                 if(outcome.equals("Hit")){
 
                                     opphitIndicator.setText("Opponent Hit");
-
+                                    Square editing = (Square)oppGrid.getChildren().get((r*BOARD_SIZE + c));
+                                    editing.setFill(Color.BLACK);
+                                
+                                //if Miss is returned it sets the cell as White
                                 }else if(outcome.equals("Miss")){
                                     
                                     opphitIndicator.setText("Opponent Miss");
-
-                                }else if(outcome.equals("Area already shot")){
-                                    opphitIndicator.setText("You already shot at that area, go again");
+                                    Square editing = (Square)oppGrid.getChildren().get((r*BOARD_SIZE + c));
+                                    editing.setFill(Color.WHITE);
+                                
+                                //else makes the cell Black and tells what ship has been sunk
                                 }else{
                                     
                                     opphitIndicator.setText("Opponent Hit");
+                                    Square editing = (Square)oppGrid.getChildren().get((r*BOARD_SIZE + c));
+                                    editing.setFill(Color.BLACK);
                                     oppsunkIndicator.setText("Opponent has "+ outcome);
+
                                     if(!player1.checkStillAlive()){
                                         messages.setText("Player2 wins");
-                                    };
                                     }
-                                    currPlayer.setText("player1");
+
+                                }
+                                    currPlayer.setText("player1");//once a spot has been shot, changes to player1
                                 }
                             }
 
@@ -203,16 +270,10 @@ public class BattleshipRunner extends Application{
                         //checks if all ships are set for a player1 then sets ship for player2 (assuming they are a computer)
                         //otherwise it will display the next ship size to be placed
                         if(player1.allShipsSet()){
-                            messages.setText(COMPSETUP);
-                            shipSetup.setText("");
-                            player2.placeShips(0, 0, 'a'); //dummy arguments do nothing
-                            messages.setText(PLAYING);
-                            for(int k = 0; k < BOARD_SIZE*BOARD_SIZE; k++){
-                                Square editing = (Square)grid.getChildren().get(k);
-                                editing.setFill(Color.BLUE);
-                            }
-                        }else{
-                            shipSetup.setText("Current ship to set " + player1.currShipSize());
+                            messages.setText("");
+                            container.add(confirm,1,9);
+                            container.add(deny,1,10);
+                            oppsunkIndicator.setText("Confirm Placement?");
                         }
                     }
                 });
@@ -221,16 +282,22 @@ public class BattleshipRunner extends Application{
 
         shipSetup.setText("Current ship to set " + player1.currShipSize());//tells shipSetup the first ship to be placed
         //sets up the places of all labels on the screen
-        grid.add(messages,BOARD_SIZE+1,0);
-        grid.add(errorMessages, BOARD_SIZE+1, 1);
-        grid.add(shipSetup, BOARD_SIZE+1,6);
-        grid.add(currPlayer, BOARD_SIZE+1,3);
-        grid.add(hitIndicator, BOARD_SIZE+1,4);
-        grid.add(sunkIndicator, BOARD_SIZE, 5);
-        grid.add(opphitIndicator, BOARD_SIZE+1,7);
-        grid.add(oppsunkIndicator, BOARD_SIZE+1,8);
+        container.add(messages,1,0);
+        container.add(errorMessages,1,1);
+        container.add(shipSetup,1,6);
+        container.add(currPlayer,1,3);
+        container.add(hitIndicator,1,4);
+        container.add(sunkIndicator,1,5);
+        container.add(opphitIndicator,1,7);
+        container.add(oppsunkIndicator,1, 8);
+
+        container.add(grid,0,0);
+        container.add(oppGrid,2,0);
+
+        container.add(new Label("Player1"),0,1);
+        container.add(new Label("Player2"),3,1);
         
-        Scene scene = new Scene(grid);
+        Scene scene = new Scene(container,1725,925);
         stage.setScene(scene);
         stage.show();
     }
