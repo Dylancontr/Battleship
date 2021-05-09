@@ -1,4 +1,5 @@
-public class Ship {
+import java.io.Serializable;
+public class Ship implements Serializable{
     
     private boolean sunk;//status of ship
     private ShipPart[] size;//size of ship

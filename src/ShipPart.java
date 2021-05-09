@@ -1,4 +1,6 @@
-public class ShipPart implements IEntity{
+import java.io.Serializable;
+
+public class ShipPart implements IEntity, Serializable{
     
     private boolean hit;//tells if part has been struck
     private int shipID;//tells what ship it is a part of

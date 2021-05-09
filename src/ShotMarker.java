@@ -1,8 +1,14 @@
-public class ShotMarker implements IEntity{
+import java.io.Serializable;
+
+public class ShotMarker implements IEntity, Serializable{
     
-    //creates a shotMarker. It's purpose is to exist in a spot and do nothing (If only our existance was that simple).
-    public ShotMarker(){
-        
+    boolean type;//true = hit, false = miss
+
+    public ShotMarker(boolean t){
+        type = t;
     }
     
+    public boolean getType(){
+        return type;
+    }
 }

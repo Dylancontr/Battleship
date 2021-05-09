@@ -1,4 +1,6 @@
-public class Coordinates implements Comparable<Coordinates>{
+import java.io.Serializable;
+
+public class Coordinates implements Comparable<Coordinates>, Serializable{
     
     private int row;
     private int col;
@@ -31,13 +33,16 @@ public class Coordinates implements Comparable<Coordinates>{
    @Override
    public int compareTo(Coordinates other){
     if(col == other.getCol()){
+
         if(row == other.getRow()) return 0;
+
         else if(row > other.getRow()) return 3;
         else if(row < other.getRow()) return 4;
 
         else return -1;
         
     }else if(row == other.getRow()){
+        
         if(col > other.getCol()) return 1;
         else if(col < other.getCol()) return 2;
 

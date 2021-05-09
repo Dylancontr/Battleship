@@ -1,6 +1,7 @@
 import javafx.scene.shape.Rectangle;
+import java.io.Serializable;
 
-public class Square extends Rectangle implements Comparable<Square>{
+public class Square extends Rectangle implements Comparable<Square>, Serializable{
     
     private int row;//holds row of square
     private int col;//hold column of square

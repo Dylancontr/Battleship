@@ -1,4 +1,6 @@
-public abstract class Player {
+import java.io.Serializable;
+
+public abstract class Player implements Serializable{
     
     private IEntity[][] board;//creates a 2d array of IEntity
     private Ship[] ships;//array of ships
@@ -85,11 +87,17 @@ public abstract class Player {
         return board[r][c] instanceof ShotMarker;
     }
 
+    //false = miss/true = hit
+    public boolean shotType(int r, int c) throws Exception{
+        if(shot(r,c)) return ((ShotMarker)(board[r][c])).getType();
+        else throw new Exception("Not a ShotMarker");
+    }
+
     //returns -1 = miss, id = returns sunk ship id, 0 = hit, -2 if spot was already fired upon
     protected int shoot(int r, int c){
         //if areas is free places a shot marker on spot then returns miss
         if(areaIsFree(r,c)){
-            board[r][c] = new ShotMarker();
+            board[r][c] = new ShotMarker(false);
             return -1;
         }
         //if shot marker is present then it will return that the spot was already fired upon
@@ -101,7 +109,7 @@ public abstract class Player {
         //by default the ids are 1-5
         if(board[r][c] instanceof ShipPart){
             int id = ((ShipPart)board[r][c]).beHit();
-            board[r][c] = new ShotMarker();
+            board[r][c] = new ShotMarker(true);
             if(ships[id-1].isSunk()) return id;
         }
         //if the ship hasn't been sunk it will go out here and return 0

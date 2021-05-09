@@ -7,7 +7,7 @@ public class HumanPlayer extends Player{
     //calls setshipcoor with 2 int parameters and a character parameter that speficy a row, column, and direction
     @Override
     public boolean placeShips(int r, int c, char d) {
-        return super.setShipCoor(r,c,d);
+        return setShipCoor(r,c,d);
     }
 
     //calls shoot other and determines what to do
@@ -28,17 +28,17 @@ public class HumanPlayer extends Player{
             case -2:
                 return "Area already shot";
             case 1:
-                return " sunk Destroyer";
+                return "sunk Destroyer";
             case 2:
-                return " sunk Submarine";
+                return "sunk Submarine";
             case 3:
-                return " sunk Cruiser";
+                return "sunk Cruiser";
             case 4:
-                return " sunk Battleship";
+                return "sunk Battleship";
             case 5:
-                return " sunk Carrier";
+                return "sunk Carrier";
             default:
-                return " sunk ship number " + hitItem;
+                return "sunk ship number " + hitItem;
         }
 
     }

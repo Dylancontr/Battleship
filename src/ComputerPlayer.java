@@ -156,19 +156,19 @@ public class ComputerPlayer extends Player{
             //destroying a ship will clear the targets of target array and prevHit, shooting will be random now
             case 1:
                 clearTargets();
-                return " sunk Destroyer";
+                return "sunk Destroyer";
             case 2:
                 clearTargets();
-                return " sunk Submarine";
+                return "sunk Submarine";
             case 3:
                 clearTargets();
-                return " sunk Cruiser";
+                return "sunk Cruiser";
             case 4:
                 clearTargets();
-                return " sunk Battleship";
+                return "sunk Battleship";
             case 5:
                 clearTargets();
-                return " sunk Carrier";
+                return "sunk Carrier";
             default:
                 clearTargets();
                 return "You sunk ship number " + hitItem;

@@ -1,0 +1,8 @@
+.label-player{
+    -fx-font-size: 20;
+    /*-fx-background-color: black;*/
+}
+
+.label-sunk .text{
+    -fx-strikethrough:true;
+}
