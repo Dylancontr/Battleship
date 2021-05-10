@@ -162,16 +162,57 @@ public class BattleshipRunner extends Application{
     	MenuItem load = new MenuItem("_Load previous game");
     	MenuItem save = new MenuItem("_Save game");
     	MenuItem exit = new MenuItem("E_xit");
+    	MenuItem restart = new MenuItem("_Restart");
     	
     	Options.getItems().add(load);
     	Options.getItems().add(save);
     	Options.getItems().add(new SeparatorMenuItem());
+    	Options.getItems().add(restart);
     	Options.getItems().add(exit);
 
         exit.setOnAction(event ->{
     		stage.close();
     	});
 
+        restart.setOnAction(event ->{
+        	player1.clearBoard();
+        	player1.setCurrIndex(0);
+        	for(int k = 0; k < BOARD_SIZE*BOARD_SIZE; k++){
+        		Square editing = (Square)grid.getChildren().get(k);
+        		editing.setFill(Color.BLUE);
+        	}
+        	player2.clearBoard();
+        	player2.setCurrIndex(0);
+        	for(int k = 0;k < BOARD_SIZE*BOARD_SIZE; k++) {
+        		Square editing = (Square)oppGrid.getChildren().get(k);
+        		editing.setFill(Color.BLUE);
+        	}
+        	messages.setText(SETUP);
+        	errorMessages.setText("");
+        	
+        	p1Des.getStyleClass().removeAll("label-sunk");
+        	p1Sub.getStyleClass().removeAll("label-sunk");
+        	p1Cru.getStyleClass().removeAll("label-sunk");
+        	p1Bat.getStyleClass().removeAll("label-sunk");
+        	p1Car.getStyleClass().removeAll("label-sunk");
+        	
+        	p2Des.getStyleClass().removeAll("label-sunk");
+        	p2Sub.getStyleClass().removeAll("label-sunk");
+        	p2Cru.getStyleClass().removeAll("label-sunk");
+        	p2Bat.getStyleClass().removeAll("label-sunk");
+        	p2Car.getStyleClass().removeAll("label-sunk");
+        	
+        	currPlayer.setText("player1");
+        	
+        	shipSetup.setText("");
+        	hitIndicator.setText("");
+        	sunkIndicator.setText("");
+        	opphitIndicator.setText("");
+        	oppsunkIndicator.setText("");
+        	
+        	Message.setText("Game restarted");
+        });
+        
         save.setOnAction(event ->{
     		try {
     		FileOutputStream savefile = new FileOutputStream("PLAYER.dat");
@@ -233,10 +274,10 @@ public class BattleshipRunner extends Application{
                 if((Boolean)B.readObject())p1Bat.getStyleClass().add("label-sunk");
                 else p1Bat.getStyleClass().removeAll("label-sunk");
                 if((Boolean)B.readObject() && !p1Car.getStyleClass().contains("label-sunk"))p1Car.getStyleClass().add("label-sunk");
-                else p1Car.getStyleClass().remove("label-sunk");
+                else p1Car.getStyleClass().removeAll("label-sunk");
 
                 if((Boolean)B.readObject())p2Des.getStyleClass().add("label-sunk");
-                else p1Des.getStyleClass().removeAll("label-sunk");
+                else p2Des.getStyleClass().removeAll("label-sunk");
                 if((Boolean)B.readObject())p2Sub.getStyleClass().add("label-sunk");
                 else p2Sub.getStyleClass().removeAll("label-sunk");
                 if((Boolean)B.readObject())p2Cru.getStyleClass().add("label-sunk");
