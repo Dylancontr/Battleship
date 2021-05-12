@@ -1,7 +1,7 @@
 public class ComputerPlayer extends Player{
 
-    Coordinates[] target;//holds planned targets
-    Coordinates prevHit;//holds a successful hit that will be compared to target[0] if it exists
+    private Coordinates[] target;//holds planned targets
+    private Coordinates prevHit;//holds a successful hit that will be compared to target[0] if it exists
 
     //calls player constructor
     public ComputerPlayer(){
@@ -141,7 +141,6 @@ public class ComputerPlayer extends Player{
                                 break;
                             default:
                                 cycleTarget();
-                                System.out.println("-1");
                                 break;
                             }
                     }else{

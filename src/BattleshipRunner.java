@@ -175,171 +175,17 @@ public class BattleshipRunner extends Application{
     	});
 
         restart.setOnAction(event ->{
-        	player1.clearBoard();
-        	player1.setCurrIndex(0);
-        	for(int k = 0; k < BOARD_SIZE*BOARD_SIZE; k++){
-        		Square editing = (Square)grid.getChildren().get(k);
-        		editing.setFill(Color.BLUE);
-        	}
-        	player2.clearBoard();
-        	player2.setCurrIndex(0);
-        	for(int k = 0;k < BOARD_SIZE*BOARD_SIZE; k++) {
-        		Square editing = (Square)oppGrid.getChildren().get(k);
-        		editing.setFill(Color.BLUE);
-        	}
-        	messages.setText(SETUP);
-        	errorMessages.setText("");
-        	
-        	p1Des.getStyleClass().removeAll("label-sunk");
-        	p1Sub.getStyleClass().removeAll("label-sunk");
-        	p1Cru.getStyleClass().removeAll("label-sunk");
-        	p1Bat.getStyleClass().removeAll("label-sunk");
-        	p1Car.getStyleClass().removeAll("label-sunk");
-        	
-        	p2Des.getStyleClass().removeAll("label-sunk");
-        	p2Sub.getStyleClass().removeAll("label-sunk");
-        	p2Cru.getStyleClass().removeAll("label-sunk");
-        	p2Bat.getStyleClass().removeAll("label-sunk");
-        	p2Car.getStyleClass().removeAll("label-sunk");
-        	
-        	currPlayer.setText("player1");
-        	
-        	shipSetup.setText("");
-        	hitIndicator.setText("");
-        	sunkIndicator.setText("");
-        	opphitIndicator.setText("");
-        	oppsunkIndicator.setText("");
+        	LOAD("RESTART.dat");
         	
         	Message.setText("Game restarted");
         });
         
         save.setOnAction(event ->{
-    		try {
-    		FileOutputStream savefile = new FileOutputStream("PLAYER.dat");
-    		ObjectOutputStream A = new ObjectOutputStream(savefile);
-    		A.writeObject(player1);
-    		A.writeObject(player2);
-            
-            A.writeObject(selection);
-
-            A.writeObject(messages.getText());
-            A.writeObject(errorMessages.getText());
-
-            A.writeObject(p1Des.getStyleClass().contains("label-sunk"));
-            A.writeObject(p1Sub.getStyleClass().contains("label-sunk"));
-            A.writeObject(p1Cru.getStyleClass().contains("label-sunk"));
-            A.writeObject(p1Bat.getStyleClass().contains("label-sunk"));
-            A.writeObject(p1Car.getStyleClass().contains("label-sunk"));
-
-            A.writeObject(p2Des.getStyleClass().contains("label-sunk"));
-            A.writeObject(p2Sub.getStyleClass().contains("label-sunk"));
-            A.writeObject(p2Cru.getStyleClass().contains("label-sunk"));
-            A.writeObject(p2Bat.getStyleClass().contains("label-sunk"));
-            A.writeObject(p2Car.getStyleClass().contains("label-sunk"));
-
-            A.writeObject(currPlayer.getText());
-            A.writeObject(shipSetup.getText());
-            A.writeObject(hitIndicator.getText());
-            A.writeObject(sunkIndicator.getText());
-            A.writeObject(opphitIndicator.getText());
-            A.writeObject(oppsunkIndicator.getText());
-
-
-    		Message.setText("Game Saved");
-    		A.close();
-            if(messages.getText().equals("")) container.getChildren().removeAll(confirm,deny);
-
-        }catch (Exception e) {Message.setText("An error has occurred when saving to the file!");
-    		e.printStackTrace();}
+    		SAVE("PLAYER.dat");
     	});
 
     	load.setOnAction(event ->{
-        	try {
-                FileInputStream Loadfile = new FileInputStream("PLAYER.dat");
-                ObjectInputStream B = new ObjectInputStream(Loadfile);
-                player1 = (HumanPlayer)(B.readObject());
-                player2 = (ComputerPlayer)(B.readObject());
-
-                selection = (Square)(B.readObject());
-
-                messages.setText(((String)(B.readObject())));
-                errorMessages.setText(((String)(B.readObject())));
-
-                if((Boolean)B.readObject())p1Des.getStyleClass().add("label-sunk");
-                else p1Des.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject())p1Sub.getStyleClass().add("label-sunk");
-                else p1Sub.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject())p1Cru.getStyleClass().add("label-sunk");
-                else p1Cru.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject())p1Bat.getStyleClass().add("label-sunk");
-                else p1Bat.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject() && !p1Car.getStyleClass().contains("label-sunk"))p1Car.getStyleClass().add("label-sunk");
-                else p1Car.getStyleClass().removeAll("label-sunk");
-
-                if((Boolean)B.readObject())p2Des.getStyleClass().add("label-sunk");
-                else p2Des.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject())p2Sub.getStyleClass().add("label-sunk");
-                else p2Sub.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject())p2Cru.getStyleClass().add("label-sunk");
-                else p2Cru.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject())p2Bat.getStyleClass().add("label-sunk");
-                else p2Bat.getStyleClass().removeAll("label-sunk");
-                if((Boolean)B.readObject())p2Car.getStyleClass().add("label-sunk");
-                else p2Car.getStyleClass().removeAll("label-sunk");
-
-                currPlayer.setText(((String)(B.readObject())));
-                shipSetup.setText(((String)(B.readObject())));
-                hitIndicator.setText(((String)(B.readObject())));
-                sunkIndicator.setText(((String)(B.readObject())));
-                opphitIndicator.setText(((String)(B.readObject())));
-                oppsunkIndicator.setText(((String)(B.readObject())));
-
-                Message.setText("Previous game loaded");
-
-                if(!messages.getText().equals("")) container.getChildren().removeAll(confirm,deny);
-                
-                B.close();
-
-                for(int r = 0; r < BOARD_SIZE; r++){
-                    for(int c = 0; c < BOARD_SIZE; c++){
-                        Square editing = (Square)oppGrid.getChildren().get((r*BOARD_SIZE + c));
-                        if(!messages.getText().equals(PLAYING)) editing = (Square)grid.getChildren().get((r*BOARD_SIZE + c));
-                        if(player1.areaIsFree(r, c)){
-                            editing.setFill(Color.BLUE);
-                        }
-                        else if(player1.shot(r,c)){
-                            if(!player1.shotType(r, c)) editing.setFill(Color.WHITE);
-                            else editing.setFill(Color.BLACK);
-                        }else{
-                            if(!messages.getText().equals(PLAYING)) editing.setFill(Color.GREEN);
-                            else editing.setFill(Color.BLUE);
-                        }
-                        
-                        editing = (Square)grid.getChildren().get((r*BOARD_SIZE + c));
-                        if(!messages.getText().equals(PLAYING)) editing = (Square)oppGrid.getChildren().get((r*BOARD_SIZE + c));
-                        if(player2.areaIsFree(r, c)){
-                            editing.setFill(Color.BLUE);
-                        }
-                        else if(player2.shot(r,c)){
-                            if(!player2.shotType(r, c)) editing.setFill(Color.WHITE);
-                            else editing.setFill(Color.BLACK);
-                        }else{
-                            if(!messages.getText().equals(PLAYING)) editing.setFill(Color.GREEN);
-                            editing.setFill(Color.BLUE);
-                        }
-                    }
-                }
-
-                if(messages.getText().equals(DIRECTION)){
-                    ((Square)grid.getChildren().get((selection.getRow()*BOARD_SIZE + selection.getCol()))).setFill(Color.RED);
-                }
-
-
-            }catch (Exception e) {
-                Message.setText("An error has occurred when loading the file!");
-        	    e.printStackTrace();
-            } 
-    		
+        	LOAD("PLAYER.dat");
     	});
         
         //Sets up boards of squares and sets their behaviors when clicked on
@@ -349,6 +195,8 @@ public class BattleshipRunner extends Application{
         setCompBoard();
 
         setBoard();//PlayerBoard
+
+        SAVE("RESTART.dat");
 
 
         shipSetup.setText("Current ship to set " + player1.currShipSize());//tells shipSetup the first ship to be placed
@@ -662,5 +510,136 @@ public class BattleshipRunner extends Application{
             else p1Car.getStyleClass().add("label-sunk");
         }
 
+    }
+    private void SAVE(String SF) {
+        try {
+            FileOutputStream savefile = new FileOutputStream(SF);
+            ObjectOutputStream A = new ObjectOutputStream(savefile);
+            A.writeObject(player1);
+            A.writeObject(player2);
+            
+            A.writeObject(selection);
+    
+            A.writeObject(messages.getText());
+            A.writeObject(errorMessages.getText());
+    
+            A.writeObject(p1Des.getStyleClass().contains("label-sunk"));
+            A.writeObject(p1Sub.getStyleClass().contains("label-sunk"));
+            A.writeObject(p1Cru.getStyleClass().contains("label-sunk"));
+            A.writeObject(p1Bat.getStyleClass().contains("label-sunk"));
+            A.writeObject(p1Car.getStyleClass().contains("label-sunk"));
+    
+            A.writeObject(p2Des.getStyleClass().contains("label-sunk"));
+            A.writeObject(p2Sub.getStyleClass().contains("label-sunk"));
+            A.writeObject(p2Cru.getStyleClass().contains("label-sunk"));
+            A.writeObject(p2Bat.getStyleClass().contains("label-sunk"));
+            A.writeObject(p2Car.getStyleClass().contains("label-sunk"));
+    
+            A.writeObject(currPlayer.getText());
+            A.writeObject(shipSetup.getText());
+            A.writeObject(hitIndicator.getText());
+            A.writeObject(sunkIndicator.getText());
+            A.writeObject(opphitIndicator.getText());
+            A.writeObject(oppsunkIndicator.getText());
+    
+            if (SF.equals("PLAYER.dat"))
+            Message.setText("Game Saved");
+            A.close();
+            if(messages.getText().equals("")) container.getChildren().removeAll(confirm,deny);
+    
+        }catch (Exception e) {
+            Message.setText("An error has occurred when saving to the file!");
+            e.printStackTrace();
+        }
+    }
+    private void LOAD(String LF) {
+        try {
+            FileInputStream Loadfile = new FileInputStream(LF);
+            ObjectInputStream B = new ObjectInputStream(Loadfile);
+            player1 = (HumanPlayer)(B.readObject());
+            player2 = (ComputerPlayer)(B.readObject());
+        
+            selection = (Square)(B.readObject());
+        
+            messages.setText(((String)(B.readObject())));
+            errorMessages.setText(((String)(B.readObject())));
+        
+            if((Boolean)B.readObject())p1Des.getStyleClass().add("label-sunk");
+            else p1Des.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject())p1Sub.getStyleClass().add("label-sunk");
+            else p1Sub.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject())p1Cru.getStyleClass().add("label-sunk");
+            else p1Cru.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject())p1Bat.getStyleClass().add("label-sunk");
+            else p1Bat.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject() && !p1Car.getStyleClass().contains("label-sunk"))p1Car.getStyleClass().add("label-sunk");
+            else p1Car.getStyleClass().removeAll("label-sunk");
+        
+            if((Boolean)B.readObject())p2Des.getStyleClass().add("label-sunk");
+            else p2Des.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject())p2Sub.getStyleClass().add("label-sunk");
+            else p2Sub.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject())p2Cru.getStyleClass().add("label-sunk");
+            else p2Cru.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject())p2Bat.getStyleClass().add("label-sunk");
+            else p2Bat.getStyleClass().removeAll("label-sunk");
+            if((Boolean)B.readObject())p2Car.getStyleClass().add("label-sunk");
+            else p2Car.getStyleClass().removeAll("label-sunk");
+        
+            currPlayer.setText(((String)(B.readObject())));
+            shipSetup.setText(((String)(B.readObject())));
+            hitIndicator.setText(((String)(B.readObject())));
+            sunkIndicator.setText(((String)(B.readObject())));
+            opphitIndicator.setText(((String)(B.readObject())));
+            oppsunkIndicator.setText(((String)(B.readObject())));
+        
+            if (LF.equals("PLAYER.dat"))
+                Message.setText("Previous game loaded");
+            
+            if(!messages.getText().equals("")) 
+                container.getChildren().removeAll(confirm,deny);
+            
+            B.close();
+        
+            for(int r = 0; r < BOARD_SIZE; r++){
+                for(int c = 0; c < BOARD_SIZE; c++){
+                    Square editing = (Square)oppGrid.getChildren().get((r*BOARD_SIZE + c));
+                    if(!messages.getText().equals(PLAYING)) editing = (Square)grid.getChildren().get((r*BOARD_SIZE + c));
+                    if(player1.areaIsFree(r, c)){
+                        editing.setFill(Color.BLUE);
+                    }
+                    else if(player1.shot(r,c)){
+                        if(!player1.shotType(r, c)) editing.setFill(Color.WHITE);
+                        else editing.setFill(Color.BLACK);
+                    }else{
+                        if(!messages.getText().equals(PLAYING)) editing.setFill(Color.GREEN);
+                        else editing.setFill(Color.BLUE);
+                    }
+                    
+                    editing = (Square)grid.getChildren().get((r*BOARD_SIZE + c));
+                    if(!messages.getText().equals(PLAYING)) editing = (Square)oppGrid.getChildren().get((r*BOARD_SIZE + c));
+                    if(player2.areaIsFree(r, c)){
+                        editing.setFill(Color.BLUE);
+                    }
+                    else if(player2.shot(r,c)){
+                        if(!player2.shotType(r, c)) editing.setFill(Color.WHITE);
+                        else editing.setFill(Color.BLACK);
+                    }else{
+                        if(!messages.getText().equals(PLAYING)) editing.setFill(Color.GREEN);
+                        editing.setFill(Color.BLUE);
+                    }
+                }
+            }
+        
+            if(messages.getText().equals(DIRECTION)){
+                ((Square)grid.getChildren().get((selection.getRow()*BOARD_SIZE + selection.getCol()))).setFill(Color.RED);
+            }
+    
+    
+        }catch (Exception e) {
+            Message.setText("An error has occurred when loading the file!");
+            e.printStackTrace();
+        } 
+    
     }
 }

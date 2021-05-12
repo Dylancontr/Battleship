@@ -134,7 +134,7 @@ public abstract class Player implements Serializable{
     }
 
     //gets the ship at index specified
-    public Ship getShipIndex(int j){
+    public Ship getShip(int j){
         return ships[j];
     }
 

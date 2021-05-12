@@ -4,7 +4,7 @@ public class Ship implements Serializable{
     private boolean sunk;//status of ship
     private ShipPart[] size;//size of ship
     private int id;//id of ship
-    int length;//length of size
+    private int length;//length of size
     
     //takes in two ints, they are the size of the ship and the id of the ship
     public Ship(int l, int i){
