@@ -324,7 +324,7 @@ public class BattleshipRunner extends Application{
                                     }while(outcome.equals("Area already shot") && player2.getTarget() != null);
                                     //while loop to make sure it won't fire on something it already has shot and in that case if there is a target still present
                                 }
-                                
+
                                 //randomly picks board square until it hits a new spot in the case outcome is not set or do while loop in previous if
                                 //resulted in "Area already shot"
                                 if(outcome.equals("Area already shot") || outcome.equals("")){
