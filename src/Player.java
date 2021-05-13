@@ -79,7 +79,7 @@ public abstract class Player implements Serializable{
     
     //returns if area is free/nothing is in the spot
     public boolean areaIsFree(int r, int c){
-        return board[r][c] == null;
+        return r < 0 || r >= BOARD_SIZE_ROW || c < 0 || c >= BOARD_SIZE_COL || board[r][c] == null;
     }
 
     //checks if spot has already been shot
