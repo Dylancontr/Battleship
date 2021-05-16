@@ -1,12 +1,22 @@
 import java.io.Serializable;
+/**
+ * class represents the Ship which consists of Ship parts 
+ * @author  Dylan,Evgeniya, Ivan
+ */
 public class Ship implements Serializable{
+	   
+    private boolean sunk;
+    private ShipPart[] size;
+    private int id;
+    private int length;
     
-    private boolean sunk;//status of ship
-    private ShipPart[] size;//size of ship
-    private int id;//id of ship
-    private int length;//length of size
-    
-    //takes in two ints, they are the size of the ship and the id of the ship
+    /**
+  	 * Non-default constructor
+  	 * @param l= length of size of  the Ship
+  	 * @param i= id of the Ship
+  	 * creates size of the Ship
+  	 * sunk is  false initially
+  	 * */
     public Ship(int l, int i){
         size = new ShipPart[l];
         for(int j = 0; j < l; j++){
@@ -17,33 +27,46 @@ public class Ship implements Serializable{
         id = i;
     }
 
-    //Gives each shipPart their id
+    /**
+   	 * Go through size of the ship  and gives each shipPart their id
+   	 * @param id = part of the ship
+   	 */
     public void setShip(){
         for(int i = 0; i < size.length; i++){
             size[i].setShipID(id);
         }
     }
 
-    //checks if ship is sunk by seeing if each ShipPart has been hit
+    /**
+   	 * Checks if  ship is sunk by checking if each  ShipPart of the ship has been hit
+   	 * @return false if ship is not sunk otherwise true
+   	 */
     public boolean isSunk(){
-        //checking each ShipPart
+       
         for(int i = 0; i < size.length; i++){
-            if(!size[i].getHit()) return false;
-        }
-        //tells Ship it has been sunk
+            if(!size[i].getHit()) 
+            	return false;
+        } 
         sunk = true;
         return true;
     }
 
-    //Getters/Accessors
+    /**
+   	 * @return  Ship part identification
+   	 */
     public ShipPart getShipPart(int i){
         return size[i];
     }
-
+    /**
+   	 * @return  true if ship is sunk
+   	 */
     public boolean getSunk(){
         return sunk;
     }
-
+    
+    /**
+   	 * @return  length of the size
+   	 */
     public int getLength(){
         return length;
     }

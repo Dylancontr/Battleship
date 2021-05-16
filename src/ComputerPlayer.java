@@ -1,16 +1,27 @@
+/**
+ * class represents the  Computer Player  
+ * @author  Dylan, Evgeniya, Ivan
+ */
 public class ComputerPlayer extends Player{
 
-    private Coordinates[] target;//holds planned targets
-    private Coordinates prevHit;//holds a successful hit that will be compared to target[0] if it exists
-
-    //calls player constructor
+    private Coordinates[] target;
+    private Coordinates prevHit;
+   
+    /**
+   	 * Non-default constructor
+   	 * calls  parent Player constructor
+   	 * @param   target - holds number of planned targets
+   	 * @param  prevHit- holds a successful hit that will be compared to target[0] if it exists
+   	 */
     public ComputerPlayer(){
         super();
         target = new Coordinates[4];
         prevHit = null;
     }
 
-    //cycles targets in target array
+    /**
+   	 * method that cycles targets in target array  
+   	 */
     public void cycleTarget(){
         for(int j = 0; j < 3 && target[j] != null; j++){
             target[j] = target[j+1];
@@ -18,7 +29,10 @@ public class ComputerPlayer extends Player{
         target[3] = null;
     }
 
-    //cycles starting from an index
+
+    /**
+   	 * method that cycles starting from an index
+   	 */
     public void cycleFromIndex(int k){
         for(int j = k; j < 3 && target[j] != null; j++){
             target[j] = target[j+1];
@@ -26,20 +40,33 @@ public class ComputerPlayer extends Player{
         if(k < 3) target[3] = null;
     }
 
-    //gets the first element in target
+    /**
+   	 * @return the first element in target
+   	 */
     public Coordinates getTarget(){
         return target[0];
     }
 
-    //checks if the coordinate is valid by making sure it's in bounds and a spot that hasn't already been shot
+    /**
+     * checks if the coordinate is valid by making sure it's in bounds 
+     * and a spot that hasn't already been shot
+   	 * @return true if  coordinate is Valid and not shot
+   	 */
     public boolean isValid(Coordinates check){
         if(check.getRow() < 0 || check.getRow() >= BOARD_SIZE_ROW ||
          check.getCol() < 0 || check.getCol() >= BOARD_SIZE_COL ||
-         shot(check.getRow(), check.getCol())) return false;
-        else return true;
+         shot(check.getRow(), check.getCol())) 
+        	return false;
+        else 
+        	return true;
     }
 
-    //empties target array and prevHit
+ 
+    /**
+     * sets target array and prevHit to null
+   	 * @param prevHit- holds a successful hit
+   	 * @param target- array that holds bunber of planned targets
+   	 */  
     private void clearTargets(){
         for(int j = 0; j < 4 && target[j] != null; j++){
             target[j] = null;
@@ -47,10 +74,15 @@ public class ComputerPlayer extends Player{
         prevHit = null;
     }
 
-    //Parameters are nothing, only exist because are defined in parent class
+ 
     @Override
+    /**
+     * places ship on the board 
+     * calls parent to place ships base on randomly generated values of row and column
+     * @return true if all ships are placed
+     */
     public boolean placeShips(int r, int c, char d) {
-        //keeps going until all ships set
+        
         while(!allShipsSet()){
             //randomly determines row and column
             r = (int)(Math.random() * BOARD_SIZE_ROW);
@@ -75,23 +107,32 @@ public class ComputerPlayer extends Player{
             //calls parent to place ships base on randomly generated values
             setShipCoor(r, c, d);
         }
-        //returns true when done
+       
         return true;
     }
 
-    //takes shot during its turn returns result of shot as a string
-    //takes other player and two ints
-    //player to know who to shoot at and two ints to know where to shoot
     @Override
+   /** takes shot during its turn  
+     * takes other player and position of  row and column
+     * let player to know who to shoot at and position where to shoot
+     * switch is chooses reaction based on hitItem that was determined by shoot function
+     * cases 1-5 are the name of ship IDs they have lenghts: 2,3,3,4,5
+     * any additional ships will just return their id unless added later
+     * any non ships should be specified by a number
+     * 
+     * in the case of a hit:
+          first element is checked to exist
+            if does not exist then it will designate this new hit and previous hit and set it's immediate north, south, west, and east as targets in the target array
+            if it does exist then it will compare the hit with the coordinates in previous hit and check if another shot in that direction is valid: if so set that as next target
+            if there is nothing in previous hit however it will set prevHit as what was just struck
+   	 * if already shot it will cycle the array
+   	 * destroying a ship will clear the targets of target array and prevHit, shooting will be random now
+   	 * *@return  result of shot as a string
+   	 */
     public String takeTurn(Player other, int r, int c) {
 
         int hitItem = other.shoot(r,c);
 
-
-        //chooses reaction based on hitItem that was determined by shoot function
-        //cases 1-5 are the name of ship IDs they have lenghts: 2,3,3,4,5
-        //any additional ships will just return their id unless added later
-        //any non ships should be specified by a number
         switch(hitItem){
             //in the case of a miss and the first element of target is not null, the array will cycle
             case -1:

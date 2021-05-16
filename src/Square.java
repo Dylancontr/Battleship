@@ -1,34 +1,54 @@
 import javafx.scene.shape.Rectangle;
 import java.io.Serializable;
-
+/**
+ * class represents the square unit a special rectangle with all its sides the same length
+ * takes 6 ints:x coordinate, y coordinate, size of lengths, a row, and a column
+ * @author Dylan, Evgeniya, Ivan
+ */
 public class Square extends Rectangle implements Comparable<Square>, Serializable{
     
-    private int row;//holds row of square
-    private int col;//hold column of square
+    private int row;
+    private int col;
 
-    //A square is a special rectangle with all its sides the same length
-    //takes 6 ints:x coordinate, y coordinate, size of lengths, a row, and a column
-    //x,y,s call the rectangle function
+    /**
+	 * Non-default constructor
+	 * calls parent rectangle constructor
+	 * @param r - row which holds where is square placed
+	 * @param c - column which holds where  is square placed
+	 * @param x = the X coordinate of the upper-left corner of the Rectangle.
+	 * @param y = The Y coordinate of the upper-left corner of the Rectangle.
+	 * @param s = the width and height of the Rectangle.	 
+	 */
+   
     public Square(int x, int y, int s, int r, int c){
         super(x,y,s,s);
         row = r;
         col = c;
     }
 
-    //gets row
+    /**
+	 * @return  row
+	 */
     public int getRow(){
         return row;
     }
 
-    //gets col
+    /**
+	 * @return  column
+	 */
     public int getCol(){
         return col;
     }
-
-    //Tells if other Square is directly north, south, east, west, the same Square, or in some diagnol direction
-    //north:1, south:2, west:3, east:4
-    //same square:0
-    //some diagnol:-1
+    /**
+     * compare 2 squares location
+	 * @return 1 if other Square is directly north
+	 * @return 2 if other Square is directly south
+	 * @return 3 if other Square is directly west
+	 * @return 4 if other Square is directly east
+	 * @return 0 if its same square
+	 * @return -1 if other Square is in  direction
+	 */
+   
     @Override
     public int compareTo(Square other) {
         if(col == other.getCol()){

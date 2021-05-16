@@ -1,4 +1,6 @@
-public interface IEntity {
-    //Defines  what an entity on the board should have
+package application;
 
+public interface IEntity {
+	 //Defines  what an entity on the board should have
+	
 }

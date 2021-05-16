@@ -1,36 +1,59 @@
 import java.io.Serializable;
-
+/**
+ * class represents Coordinates of Ship part 
+ * @author  Dylan,Evgeniya, Ivan
+ */
 public class Coordinates implements Comparable<Coordinates>, Serializable{
     
     private int row;
     private int col;
 
-    //They're coordinates for the grid. I don't think I need to explain more than that.
+    /**
+  	 * Non-default constructor
+  	 * @param c- column of coordinate
+  	 * @param r- row  of coordinate
+  	 **/
     public Coordinates(int r, int c){
         row = r;
         col = c;
     }
 
-    //getters/accessors
+    /**
+   	 * @return  row
+   	 */
     public int getRow(){
         return row;
    }
-
+    /**
+   	 * @return column
+   	 */
    public int getCol(){
        return col;
    }
 
-   //setters/mutators
+   /**
+  	 * @param r  sets row
+  	 */
    public void setRow(int r){
        row = r;
    }
 
+   /**
+ 	 * @param  c- sets column
+ 	 */
    public void setCol(int c){
        col = c;
    }
-
-   //copied from Square compareTo
-   @Override
+   
+   /**
+    * compare 2 coordinates 
+	 * @return 1 if other coordinate is directly north 
+	 * @return 2 if other coordinate is directly south
+	 * @return 3 if other coordinate is directly west
+	 * @return 4 if other coordinate is directly east
+	 * @return 0 if its same coordinate
+	 * @return -1 if other coordinate is in  direction
+	 */
    public int compareTo(Coordinates other){
     if(col == other.getCol()){
 

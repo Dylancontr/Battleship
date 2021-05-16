@@ -1,25 +1,40 @@
+/**
+ * class represents the  Human Player  
+ * @author  Dylan, Evgeniya, Ivan
+ */
 public class HumanPlayer extends Player{
-
+    /**
+     * default-constructor
+     * calls parent  Player constructor 
+     **/
     public HumanPlayer(){
         super();
     }
     
-    //calls setshipcoor with 2 int parameters and a character parameter that speficy a row, column, and direction
     @Override
+    /**
+     * @return ship coordinates(row, column, direction)
+     */
     public boolean placeShips(int r, int c, char d) {
         return setShipCoor(r,c,d);
     }
 
-    //calls shoot other and determines what to do
+    
     @Override
+    /**
+     * calls shoot other and determines what to do
+     * chooses reaction based on hitItem that was determined by hit function
+     * any additional ships will just return their id unless added later
+     * @return -2 if square already shot
+     * @return -1 if miss
+     * @return 0 if hit
+     * @return 1-5 are the name of ship IDs that have length of 1,2,3,4,5
+     * @return by default a number of any non ships should be specified by a number
+     */
     public String takeTurn(Player other, int r, int c) {
         
         int hitItem = other.shoot(r,c);
-
-        //chooses reaction based on hitItem that was determined by hit function
-        //cases 1-5 are the name of ship IDs they have lenghts: 2,3,3,4,5
-        //any additional ships will just return their id unless added later
-        //any non ships should be specified by a number
+        
         switch(hitItem){
             case -1:
                 return "Miss";
