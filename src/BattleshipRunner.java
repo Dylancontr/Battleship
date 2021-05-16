@@ -451,8 +451,7 @@ public class BattleshipRunner extends Application{
                                 break;
                             //for cells that are not directly north, south, east, or west of cell in selection
                             case -1:
-                                errorMessages.setText("Ship either goes out of bounds, intersects something else,"
-                                + "or not a valid direction");
+                                errorMessages.setText("Not a valid direction");
                                 messages.setText(SETUP);
                                 selection.setFill(Color.BLUE);
                                 break;
