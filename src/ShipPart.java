@@ -4,7 +4,7 @@ import java.io.Serializable;
  * @author Dylan,Evgeniya, Ivan
  */
 
-public class ShipPart implements IEntity, Serializable{
+public class ShipPart implements IMapEntity, Serializable{
     
     private boolean hit;
     private int shipID;

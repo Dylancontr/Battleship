@@ -5,7 +5,7 @@ import java.io.Serializable;
  */
 public abstract class Player implements Serializable{
     
-    private IEntity[][] board;
+    private IMapEntity[][] board;
     private Ship[] ships;
     private int i;
     private final int NUM_SHIPS = 5;
@@ -16,7 +16,7 @@ public abstract class Player implements Serializable{
  * non-default constructor
 */
     public Player(){
-        board = new IEntity[BOARD_SIZE_ROW][BOARD_SIZE_COL];
+        board = new IMapEntity[BOARD_SIZE_ROW][BOARD_SIZE_COL];
         ships = new Ship[NUM_SHIPS];
         for(int j = 0; j < NUM_SHIPS; j++){
             int size = j+1;

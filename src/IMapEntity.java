@@ -1,6 +1,4 @@
-package application;
-
-public interface IEntity {
+public interface IMapEntity {
 	 //Defines  what an entity on the board should have
 	
 }

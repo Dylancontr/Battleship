@@ -1,11 +1,10 @@
-package application;
 import java.io.Serializable;
 /**
  * class represent Shotmarker which means if  cell hit o miss
  * @author Dylan, Evgeniya, Ivan
  *
  */
-public class ShotMarker implements IEntity, Serializable{
+public class ShotMarker implements IMapEntity, Serializable{
     
     private boolean type;
 /**
