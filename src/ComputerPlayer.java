@@ -37,7 +37,7 @@ public class ComputerPlayer extends Player{
         for(int j = k; j < 3 && target[j] != null; j++){
             target[j] = target[j+1];
         }
-        if(k < 3) target[3] = null;
+        target[3] = null;
     }
 
     /**
@@ -52,11 +52,12 @@ public class ComputerPlayer extends Player{
      * and a spot that hasn't already been shot
    	 * @return true if  coordinate is Valid and not shot
    	 */
-    public boolean isValid(Coordinates check){
+    public boolean isValidTarget(Player other, Coordinates check){
         if(check.getRow() < 0 || check.getRow() >= BOARD_SIZE_ROW ||
          check.getCol() < 0 || check.getCol() >= BOARD_SIZE_COL ||
-         shot(check.getRow(), check.getCol())) 
-        	return false;
+         other.shot(check.getRow(), check.getCol())){
+             return false;
+         } 
         else 
         	return true;
     }
@@ -115,14 +116,14 @@ public class ComputerPlayer extends Player{
    /** takes shot during its turn  
      * takes other player and position of  row and column
      * let player to know who to shoot at and position where to shoot
-     * switch is chooses reaction based on hitItem that was determined by shoot function
-     * cases 1-5 are the name of ship IDs they have lenghts: 2,3,3,4,5
+     * switch chooses reaction based on hitItem that was determined by shoot function
+     * cases 1-5 are the name of ship IDs, they have lenghts: 2,3,3,4,5
      * any additional ships will just return their id unless added later
      * any non ships should be specified by a number
      * 
      * in the case of a hit:
-          first element is checked to exist
-            if does not exist then it will designate this new hit and previous hit and set it's immediate north, south, west, and east as targets in the target array
+          first element of target arrow is checked to exist
+            if does not exist then it will designate this new hit as previous hit and set it's immediate north, south, west, and east as targets in the target array
             if it does exist then it will compare the hit with the coordinates in previous hit and check if another shot in that direction is valid: if so set that as next target
             if there is nothing in previous hit however it will set prevHit as what was just struck
    	 * if already shot it will cycle the array
@@ -151,32 +152,35 @@ public class ComputerPlayer extends Player{
                     target[2] = new Coordinates(r-1, c);
                     target[3] = new Coordinates(r+1, c);
                     for(int j = 0; j < 4 && target[j] != null; j++){
-                        if(!isValid(target[j])) cycleFromIndex(j);
+                        if(!isValidTarget(other, target[j])){
+                            cycleFromIndex(j);
+                            j--;
+                        }
                     }
                 }else{
                     if(prevHit != null) {
                         switch(prevHit.compareTo(target[0])){
                             case 1:
                                 target[0].setCol(c-1);
-                                while(target[0] != null && !isValid(target[0])){
+                                while(target[0] != null && !isValidTarget(other, target[0])){
                                     cycleTarget();
                                 }
                                 break;
                             case 2:
                                 target[0].setCol(c+1);
-                                while(target[0] != null && !isValid(target[0])){
+                                while(target[0] != null && !isValidTarget(other, target[0])){
                                     cycleTarget();
                                 }
                                 break;
                             case 3:
                                 target[0].setRow(r-1);
-                                while(target[0] != null && !isValid(target[0])){
+                                while(target[0] != null && !isValidTarget(other, target[0])){
                                     cycleTarget();
                                 }
                                 break;
                             case 4:
                                 target[0].setRow(r+1);
-                                while(target[0] != null && !isValid(target[0])){
+                                while(target[0] != null && !isValidTarget(other, target[0])){
                                     cycleTarget();
                                 }
                                 break;

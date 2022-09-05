@@ -371,6 +371,7 @@ public class BattleshipRunner extends Application{
                                     }
 
                                 }
+
                                     currPlayer.setText("player1");//once a spot has been shot, changes to player1
                                 }
                             }
